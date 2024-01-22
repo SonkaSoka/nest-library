@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Book } from './book.entity';
+import { BookDto } from './book.dto';
 
 @Injectable()
 export class BookService {
@@ -15,23 +16,24 @@ export class BookService {
     return this.bookRepository.find(options);
     // return `findAll funciona límite de ${limit} registros`;
   }
-  findBook(bookId: string) {
-    return `findBook funciona con el bookId = ${bookId}`;
+
+  findBook(bookId: string): Promise<Book> {
+    return this.bookRepository.findOneBy({id: +bookId});
     //select * from book where id = bookId
   }
-  createBook(book: any) {
+  createBook(book: BookDto) {
     console.log(book);
     //insert into table Book values();
-    return book;
+    return this.bookRepository.save(book);
   }
-  updateBook(bookId: string, book: any) {
-    console.log('update', book);
-
-    return `updateBook funciona con el bookId = ${bookId}`;
-    //select * from book where id = bookId
+  updateBook(bookId: string, book: BookDto) {
+   // return `updateBook funciona con el bookId = ${bookId}`;
+   return this.bookRepository.update({id: +bookId}, book); 
+   //select * from book where id = bookId
   }
   deleteBook(bookId: string) {
-    return `deleteBook funciona con el bookId = ${bookId}`;
+    return this.bookRepository.delete({id: +bookId});
+    //return `deleteBook funciona con el bookId = ${bookId}`;
     //select * from book where id = bookId
   }
 }
