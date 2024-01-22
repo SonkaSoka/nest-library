@@ -16,7 +16,7 @@ import { User } from './user/user.entity';
       username: 'root',
       password: 'Pesmylove.22',
       database: 'library',
-      entities: [Book, User],
+      entities: [__dirname + '/**/*.entity{.ts,.js}'],
       synchronize: true,
     }),
     BookModule,
